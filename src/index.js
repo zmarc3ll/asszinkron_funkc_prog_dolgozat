@@ -12,7 +12,7 @@ async function showAllQuotes() {
 
     for (let q of data) {
         let li = document.createElement('li');
-        li.innerHTML = q.quote;
+        li.innerHTML = q.quote +' <i>-<i/>'+'<i>'+q.author+'<i/>';
         allQuotesList.appendChild(li);
     }
 }

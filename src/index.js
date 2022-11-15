@@ -17,7 +17,7 @@ async function showAllQuotes() {
     }
 }
 
-async function felkover() {
+async function boldFunct() {
     let allQuotesArray = [];
     let response = await fetch('/src/quotes.json');
     let result = await response.json();
@@ -28,8 +28,8 @@ async function felkover() {
     });
     for (let q of data) {
         data.forEach(q => {
-            q.quote = q.quote.replace(' the ','<b> the </b>');
-            q.quote = q.quote.replace('The ','<b>The </b>');
+            q.quote = q.quote.replaceAll(' the ','<b> the </b>');
+            q.quote = q.quote.replaceAll('The ','<b>The </b>');
         })
         allQuotesArray.push(q.quote);
     }
@@ -43,9 +43,36 @@ async function felkover() {
     }
 }
 
+async function lenghtOfQuote() {
+    let response = await fetch('/src/quotes.json');
+    let result = await response.json();
+    let data = result.quotes;
+    let lengthArray = [];
+    let ascendant = data.quotes.sort(function (a, b) {
+      let author1 = a.author.toUpperCase();
+      let author2 = b.author.toUpperCase();
+      if (author1 < author2) {
+        return -1;
+      } else if (author1 > author2) {
+        return 1;
+      } 
+      return 0;
+    });
+
+    let lenghtList = document.getElementById("dataList");
+    lenghtList.textContent = "";
+    for (let q of ascendant) {
+      let li = document.createElement("li");
+      lengthArray.push(q.quote.length);
+      li.innerHTML = q.quote.length +' '+ q.quote +' '+ q.author;
+      lenghtList.appendChild(li);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('allQuotes').addEventListener('click', () => { showAllQuotes() });
-    document.getElementById('felkover').addEventListener('click', () => { felkover() });
-
+    document.getElementById('bold').addEventListener('click', () => { boldFunct() });
+    document.getElementById('lenghtButton').addEventListener('click', () => { lenghtOfQuote() });
+    
 });
 

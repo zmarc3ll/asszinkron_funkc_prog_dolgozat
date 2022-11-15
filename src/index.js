@@ -59,20 +59,30 @@ async function lenghtOfQuote() {
       return 0;
     });
 
-    let lenghtList = document.getElementById("dataList");
+    let lenghtList = document.getElementById('dataList');
     lenghtList.textContent = "";
     for (let q of ascendant) {
-      let li = document.createElement("li");
+      let li = document.createElement('li');
       lengthArray.push(q.quote.length);
       li.innerHTML = q.quote.length +' '+ q.quote +' '+ q.author;
       lenghtList.appendChild(li);
     }
 }
-
+async function search() {
+    let searched = document.getElementById('searchInput').value;
+    let response = await fetch('/src/quotes.json');
+    let result = await response.json();
+    let data = result.quotes;
+    let filter = data.quotes.filter(
+      (q) => q.author.toLowerCase() === searched.toLowerCase()
+    );
+    document.getElementById('searchOutput').value = filter.length;
+}
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('allQuotes').addEventListener('click', () => { showAllQuotes() });
     document.getElementById('bold').addEventListener('click', () => { boldFunct() });
     document.getElementById('lenghtButton').addEventListener('click', () => { lenghtOfQuote() });
+    document.getElementById('counter').addEventListener('click', () => { search() });
     
 });
 
